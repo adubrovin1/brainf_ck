@@ -71,7 +71,7 @@ int main(){
             add(&code, temp);
         }
         else{
-            printf("Error: Incorrect symbol.");
+            printf("Error - Incorrect symbol: symbol %c (ASCII code %d) on position %d is not a correct brainfuck command.", temp, temp, (code.cnt + 1));
             return 3;
         }
     }
@@ -93,13 +93,20 @@ int main(){
         if ((code.arr)[i] == ']'){
             take = take_from_stack(&jumps_stack, &err);
             if (err == 1){
-                printf("Error: incorrect sequence.");
+                printf("Error - incorrect brackets sequence. Closing bracket on position %d has no opening bracket", (i + 1));
                 return 4;
             }
             jumps[i] = take;
             jumps[take] = i;
         }
     }
+
+    if (jumps_stack.ptr != 0){
+        take = take_from_stack(&jumps_stack, &err);
+        printf("Error - incorrect brackets sequence. Opening bracket on position %d has no closing bracket.", (take + 1));
+        return 4;
+    }
+    
 
     //30000 cells array (that's a standard of this language)
     char tape[30000] = {0};
@@ -121,7 +128,7 @@ int main(){
 
         if (c == '+'){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on + operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             tape[i] = tape[i] + 1;
@@ -129,7 +136,7 @@ int main(){
 
         if (c == '-'){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on - operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             tape[i] = tape[i] - 1;
@@ -137,7 +144,7 @@ int main(){
 
         if (c == '.'){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on . operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             temp = tape[i];
@@ -146,7 +153,7 @@ int main(){
 
         if (c == ','){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on , operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             scanf("%c", &temp);
@@ -155,7 +162,7 @@ int main(){
 
         if (c == '['){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on [ operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             if (tape[i] == 0){
@@ -165,7 +172,7 @@ int main(){
 
         if (c == ']'){
             if ((i < 0) || (i >= 30000)){
-                printf("Error: too big indice.");
+                printf("Error - incorrect indice: indice %d is not in range from 0 to 29999 (due to language standard array size is limited by 30000). Error occured on ] operation on position %d.", i, (pointer + 1));
                 return 5;
             }
             if (tape[i] != 0){
